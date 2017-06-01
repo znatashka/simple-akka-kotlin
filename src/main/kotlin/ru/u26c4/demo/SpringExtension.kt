@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component
 @Component
 class SpringExtension : Extension {
 
-    var applicationContext: ApplicationContext = null!!
+    var applicationContext: ApplicationContext? = null
 
     fun initialize(applicationContext: ApplicationContext) {
         this.applicationContext = applicationContext

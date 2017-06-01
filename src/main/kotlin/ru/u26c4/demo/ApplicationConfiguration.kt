@@ -12,15 +12,15 @@ import org.springframework.context.annotation.Configuration
 open class ApplicationConfiguration {
 
     @Autowired
-    var applicationContext: ApplicationContext = null!!
+    var applicationContext: ApplicationContext? = null
 
     @Autowired
-    var springExtension: SpringExtension = null!!
+    var springExtension: SpringExtension? = null
 
     @Bean
     fun actorSystem(): ActorSystem {
         val system = ActorSystem.create("demo-actor-system", akkaConfiguration())
-        springExtension.initialize(applicationContext)
+        springExtension?.initialize(applicationContext!!)
         return system
     }
 

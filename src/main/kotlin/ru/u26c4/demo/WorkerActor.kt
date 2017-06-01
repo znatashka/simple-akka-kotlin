@@ -10,13 +10,13 @@ import org.springframework.stereotype.Component
 class WorkerActor : UntypedAbstractActor() {
 
     @Autowired
-    var businessService: BusinessService = null!!
+    var businessService: BusinessService? = null
 
     var count = 0
 
     override fun onReceive(message: Any?) {
         when (message) {
-            is Request -> businessService.perform("${this} ${++count}")
+            is Request -> businessService?.perform("${this} ${++count}")
             is Response -> sender().tell(count, self())
             else -> unhandled(message)
         }

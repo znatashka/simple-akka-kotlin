@@ -14,20 +14,20 @@ import java.util.concurrent.TimeUnit
 
 @Component
 class Runner : CommandLineRunner {
-    val log = LoggerFactory.getLogger(this.javaClass)
+    val log = LoggerFactory.getLogger(this.javaClass)!!
 
     @Autowired
-    var actorSystem: ActorSystem = null!!
+    var actorSystem: ActorSystem? = null
 
     @Autowired
-    var springExtension: SpringExtension = null!!
+    var springExtension: SpringExtension? = null
 
     override fun run(vararg args: String?) {
-        val workerActor = actorSystem.actorOf(springExtension.props("workerActor"), "worker-actor")
+        val workerActor = actorSystem?.actorOf(springExtension?.props("workerActor"), "worker-actor")
 
-        workerActor.tell(Request(), null)
-        workerActor.tell(Request(), null)
-        workerActor.tell(Request(), null)
+        workerActor?.tell(Request(), null)
+        workerActor?.tell(Request(), null)
+        workerActor?.tell(Request(), null)
 
         val duration = FiniteDuration.create(1, TimeUnit.SECONDS)
         val awaitable = Patterns.ask(workerActor, Response(), Timeout.durationToTimeout(duration))
@@ -35,8 +35,8 @@ class Runner : CommandLineRunner {
         try {
             log.info("Response: {}", Await.result(awaitable, duration))
         } finally {
-            actorSystem.terminate()
-            Await.result(actorSystem.whenTerminated(), Duration.Inf())
+            actorSystem?.terminate()
+            Await.result(actorSystem?.whenTerminated(), Duration.Inf())
         }
     }
 }

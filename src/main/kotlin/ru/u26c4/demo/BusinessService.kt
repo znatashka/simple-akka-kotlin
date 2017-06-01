@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service
 
 @Service
 class BusinessService {
-    val log = LoggerFactory.getLogger(this.javaClass)
+    val log = LoggerFactory.getLogger(this.javaClass)!!
 
     fun perform(o: Any) {
         log.info("Perform: {}", o)
