@@ -4,21 +4,23 @@ import akka.actor.UntypedAbstractActor
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Scope
 import org.springframework.stereotype.Component
+import java.util.concurrent.CompletableFuture
 
-@Component
+@Component("workerActor")
 @Scope("prototype")
-class WorkerActor : UntypedAbstractActor() {
+class WorkerActor(val future: CompletableFuture<Message>) : UntypedAbstractActor() {
 
     @Autowired
     var businessService: BusinessService? = null
 
-    var count = 0
-
     override fun onReceive(message: Any?) {
+        businessService?.perform("$this $message")
+
         when (message) {
-            is Request -> businessService?.perform("${this} ${++count}")
-            is Response -> sender().tell(count, self())
+            is Message -> future.complete(message)
             else -> unhandled(message)
         }
+
+        context().stop(self())
     }
 }

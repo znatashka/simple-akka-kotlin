@@ -14,7 +14,7 @@ class SpringExtension : Extension {
         this.applicationContext = applicationContext
     }
 
-    fun props(actorBeanName: String): Props {
-        return Props.create(SpringActorProducer::class.java, applicationContext, actorBeanName)
+    fun props(actorBeanName: String, vararg args: Any?): Props {
+        return Props.create(SpringActorProducer::class.java, applicationContext, actorBeanName, args)
     }
 }
